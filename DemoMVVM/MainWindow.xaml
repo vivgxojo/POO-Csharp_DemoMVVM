@@ -1,0 +1,35 @@
+﻿<Window x:Class="DemoMVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoMVVM"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    
+    
+   
+    <Grid>
+        
+        <ListBox ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" Margin="545,0,0,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <DataGrid ItemsSource="{Binding People}" AutoGenerateColumns="True"
+          SelectedItem="{Binding SelectedPerson}" Margin="259,0,255,0"/>
+
+        <StackPanel Margin="0,0,541,0">
+            <TextBlock Text="{Binding SelectedPerson.Name}" FontSize="20" Height="86"/>
+            <TextBlock Text="{Binding SelectedPerson.Age}" FontSize="16" Height="91"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Précédent" Command="{Binding PreviousCommand}"/>
+                <Button Content="Suivant" Command="{Binding NextCommand}" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>
