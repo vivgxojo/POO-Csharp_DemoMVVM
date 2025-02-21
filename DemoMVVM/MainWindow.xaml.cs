@@ -19,6 +19,7 @@ namespace DemoMVVM
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

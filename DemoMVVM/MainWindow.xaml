@@ -6,30 +6,39 @@
         xmlns:local="clr-namespace:DemoMVVM"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
-    
-   
+    <!-- Associer le DataCOntext au ViewModel pour faire le Binding -->
+    <Window.DataContext>
+        <local:MonViewModel/>
+    </Window.DataContext>
     <Grid>
-        
-        <ListBox ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" Margin="545,0,0,0">
+        <!-- ListBox avec binding sur la liste observable et sur la sélection -->
+        <ListBox ItemsSource="{Binding ListePersonnes}" SelectedItem="{Binding PersonneSelectionnee}" Margin="10,10,588,10" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Nom}" FontWeight="Bold" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Age}" Foreground="Gray"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
-        <DataGrid ItemsSource="{Binding People}" AutoGenerateColumns="True"
-          SelectedItem="{Binding SelectedPerson}" Margin="259,0,255,0"/>
+        <Label Content="Personne sélectionnée : " HorizontalAlignment="Left" Margin="234,10,0,0" VerticalAlignment="Top"/>
+        <!-- Label et Textboxs avec binding sur l'objet sélectionné -->
+        <Label Content="{Binding PersonneSelectionnee}" HorizontalAlignment="Left" Margin="400,10,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding PersonneSelectionnee.Nom}" HorizontalAlignment="Left" Margin="243,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding PersonneSelectionnee.Age}" HorizontalAlignment="Left" Margin="400,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
-        <StackPanel Margin="0,0,541,0">
-            <TextBlock Text="{Binding SelectedPerson.Name}" FontSize="20" Height="86"/>
-            <TextBlock Text="{Binding SelectedPerson.Age}" FontSize="16" Height="91"/>
+        <DataGrid ItemsSource="{Binding ListePersonnes}" AutoGenerateColumns="True"
+          SelectedItem="{Binding PersonneSelectionnee}" Margin="234,71,254,10"/>
+
+        <StackPanel Margin="571,10,10,68">
+            <TextBlock Text="{Binding PersonneSelectionnee}" FontSize="20" Height="107"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Précédent" Command="{Binding PreviousCommand}"/>
-                <Button Content="Suivant" Command="{Binding NextCommand}" HorizontalAlignment="Right"/>
+                <Button Content="Suivant" Command="{Binding NextCommand}"/>
             </StackPanel>
         </StackPanel>
+
 
     </Grid>
 </Window>

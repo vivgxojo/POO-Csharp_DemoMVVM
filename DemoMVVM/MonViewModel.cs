@@ -5,35 +5,76 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DemoMVVM
 {
+    // Créer un ViewModel; il doit implémenter INotifyPropertyChanged 
+    // pour aviser l'interface utilisateur des changements
     public class MonViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Personne> People { get; set; }
+        //C'est l'évènement nécessaire pour implémenter INotifyPropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        //ObservableCollection permet d'utiliser le binding
+        public ObservableCollection<Personne> ListePersonnes { get; set; }
+        //Objet courrant sélectionné, avec encapsulation
         private Personne _selectedPersonne;
-        public Personne SelectedPersonne
+        public Personne PersonneSelectionnee
         {
             get { return _selectedPersonne; }
-            set { _selectedPersonne = value; OnPropertyChanged(nameof(SelectedPersonne)); }
+            set { _selectedPersonne = value; 
+                OnPropertyChanged(nameof(PersonneSelectionnee)); }
         }
+
+        // Propriétés pour la paginations 
+        private int _currentIndex; //indice de la personne sélectionnée
+        public ICommand PreviousCommand { get; } //commandes pour les boutons
+        public ICommand NextCommand { get; }
 
         public MonViewModel()
-        {
-            People = new ObservableCollection<Personne>
+        {   //Initialiser les propriétés du ViewModel avec des valeurs qui seront affichées 
+            ListePersonnes = new ObservableCollection<Personne>
             {
-                new Personne { Nom = "Alice", Age = 25 },
-                new Personne { Nom = "Bob", Age = 30 },
+                new Personne { Nom = "Alice", Age = 25 }, // Utilise le constructeur
+                new Personne { Nom = "Bob", Age = 30 },     // par défaut
                 new Personne { Nom = "Charlie", Age = 35 }
             };
-            SelectedPersonne = People[0];
+            PersonneSelectionnee = ListePersonnes[0];
+            
+            _currentIndex = 0; //initialiser les propriétés et les commandes
+            PreviousCommand = new RelayCommand(Previous, CanGoPrevious);
+            NextCommand = new RelayCommand(Next, CanGoNext);
+
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void Previous()
+        {
+            if (_currentIndex > 0)
+            {
+                _currentIndex--;
+                PersonneSelectionnee = ListePersonnes[_currentIndex];
+            }
+        }
+        private bool CanGoPrevious() => _currentIndex > 0;
+
+        private void Next()
+        {
+            if (_currentIndex < ListePersonnes.Count - 1)
+            {
+                _currentIndex++;
+                PersonneSelectionnee = ListePersonnes[_currentIndex];
+            }
+        }
+        private bool CanGoNext() => _currentIndex < ListePersonnes.Count - 1;
+
+
         protected void OnPropertyChanged(string propertyName)
         {
+            // Déclencher l'évènement pour informer l'interface utilisateur d'un changement
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+       
     }
 }

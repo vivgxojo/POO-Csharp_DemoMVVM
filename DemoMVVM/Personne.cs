@@ -10,5 +10,10 @@ namespace DemoMVVM
     {
         public string Nom { get; set; }
         public int Age { get; set; }
+
+        public override string ToString()
+        {
+            return Nom + ", " + Age + " ans.";
+        }
     }
 }
