@@ -30,6 +30,22 @@ namespace DemoMVVM
 
         // Propriétés pour la paginations 
         private int _currentIndex; //indice de la personne sélectionnée
+        public int CurrentIndex
+        {
+            get => _currentIndex;
+            set
+            {
+                if (_currentIndex != value && value >= 0 && value < ListePersonnes.Count)
+                {
+                    _currentIndex = value;
+                    OnPropertyChanged(nameof(CurrentIndex));
+                    PersonneSelectionnee = ListePersonnes[_currentIndex]; // Synchroniser la sélection
+                    OnPropertyChanged(nameof(CanGoPrevious)); // Mettre à jour les boutons
+                    OnPropertyChanged(nameof(CanGoNext));
+                }
+            }
+        }
+
         public ICommand PreviousCommand { get; } //commandes pour les boutons
         public ICommand NextCommand { get; }
 

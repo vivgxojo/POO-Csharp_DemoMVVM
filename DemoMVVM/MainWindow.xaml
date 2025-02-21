@@ -12,7 +12,7 @@
     </Window.DataContext>
     <Grid>
         <!-- ListBox avec binding sur la liste observable et sur la sélection -->
-        <ListBox ItemsSource="{Binding ListePersonnes}" SelectedItem="{Binding PersonneSelectionnee}" Margin="10,10,588,10" >
+        <ListBox ItemsSource="{Binding ListePersonnes}" SelectedItem="{Binding PersonneSelectionnee}" SelectedIndex="{Binding CurrentIndex}" Margin="10,10,588,10" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -29,7 +29,7 @@
         <TextBox Text="{Binding PersonneSelectionnee.Age}" HorizontalAlignment="Left" Margin="400,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
         <DataGrid ItemsSource="{Binding ListePersonnes}" AutoGenerateColumns="True"
-          SelectedItem="{Binding PersonneSelectionnee}" Margin="234,71,254,10"/>
+          SelectedItem="{Binding PersonneSelectionnee}" Margin="234,71,254,10" SelectedIndex="{Binding CurrentIndex}" />
 
         <StackPanel Margin="571,10,10,68">
             <TextBlock Text="{Binding PersonneSelectionnee}" FontSize="20" Height="107"/>
