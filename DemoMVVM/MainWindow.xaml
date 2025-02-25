@@ -11,8 +11,15 @@
         <local:MonViewModel/>
     </Window.DataContext>
     <Grid>
+        <Menu VerticalAlignment="Top">
+            <MenuItem Header="Fichier">
+                <MenuItem Header="Nouveau" />
+                <MenuItem Header="Ouvrir" />
+                <MenuItem Header="Enregistrer" />
+            </MenuItem>
+        </Menu>
         <!-- ListBox avec binding sur la liste observable et sur la sélection -->
-        <ListBox ItemsSource="{Binding ListePersonnes}" SelectedItem="{Binding PersonneSelectionnee}" SelectedIndex="{Binding CurrentIndex}" Margin="10,10,588,10" >
+        <ListBox ItemsSource="{Binding ListePersonnes}" SelectedItem="{Binding PersonneSelectionnee}" SelectedIndex="{Binding CurrentIndex}" Margin="10,23,588,10" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -22,16 +29,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Label Content="Personne sélectionnée : " HorizontalAlignment="Left" Margin="234,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Personne sélectionnée : " HorizontalAlignment="Left" Margin="234,23,0,0" VerticalAlignment="Top"/>
         <!-- Label et Textboxs avec binding sur l'objet sélectionné -->
-        <Label Content="{Binding PersonneSelectionnee}" HorizontalAlignment="Left" Margin="400,10,0,0" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding PersonneSelectionnee.Nom}" HorizontalAlignment="Left" Margin="243,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding PersonneSelectionnee.Age}" HorizontalAlignment="Left" Margin="400,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="{Binding PersonneSelectionnee}" HorizontalAlignment="Left" Margin="400,23,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding PersonneSelectionnee.Nom}" HorizontalAlignment="Left" Margin="243,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding PersonneSelectionnee.Age}" HorizontalAlignment="Left" Margin="400,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
         <DataGrid ItemsSource="{Binding ListePersonnes}" AutoGenerateColumns="True"
-          SelectedItem="{Binding PersonneSelectionnee}" Margin="234,71,254,10" SelectedIndex="{Binding CurrentIndex}" />
+          SelectedItem="{Binding PersonneSelectionnee}" Margin="234,84,254,10" SelectedIndex="{Binding CurrentIndex}" />
 
-        <StackPanel Margin="571,10,10,68">
+        <StackPanel Margin="571,23,10,55">
             <TextBlock Text="{Binding PersonneSelectionnee}" FontSize="20" Height="107"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Précédent" Command="{Binding PreviousCommand}"/>

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -72,6 +75,16 @@ namespace DemoMVVM
                 _currentIndex--;
                 PersonneSelectionnee = ListePersonnes[_currentIndex];
             }
+
+            try
+            {
+                string fichier = "fichier.json";
+                string json = File.ReadAllText(fichier);
+                Personne personne = JsonSerializer.Deserialize<Personne>(json);
+            }
+            catch (Exception ex) { 
+                MessageBox.Show(ex.Message);
+            }
         }
         private bool CanGoPrevious() => _currentIndex > 0;
 
@@ -82,6 +95,12 @@ namespace DemoMVVM
                 _currentIndex++;
                 PersonneSelectionnee = ListePersonnes[_currentIndex];
             }
+
+            string fichier = "fichier.json";
+            Personne personne = new Personne { Nom = "Justine", Age = 25 };
+            string json = JsonSerializer.Serialize(personne);
+            File.WriteAllText(fichier, json);
+            
         }
         private bool CanGoNext() => _currentIndex < ListePersonnes.Count - 1;
 
