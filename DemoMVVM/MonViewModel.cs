@@ -20,8 +20,26 @@ namespace DemoMVVM
         //C'est l'évènement nécessaire pour implémenter INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private string _msg;
+        public string Message
+        {
+            get { return _msg; }
+            set
+            {
+                _msg = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
+
         //ObservableCollection permet d'utiliser le binding
-        public ObservableCollection<Personne> ListePersonnes { get; set; }
+        private ObservableCollection<Personne> _listePersonnes;
+        public ObservableCollection<Personne> ListePersonnes 
+        { 
+            get { return _listePersonnes; }
+            set { _listePersonnes = value;
+                OnPropertyChanged(nameof(ListePersonnes));
+            } 
+        }
         //Objet courrant sélectionné, avec encapsulation
         private Personne _selectedPersonne;
         public Personne PersonneSelectionnee
@@ -52,6 +70,9 @@ namespace DemoMVVM
         public ICommand PreviousCommand { get; } //commandes pour les boutons
         public ICommand NextCommand { get; }
 
+        public ICommand OuvrirCommand { get; }
+        public ICommand EnregistrerCommand { get; }
+
         public MonViewModel()
         {   //Initialiser les propriétés du ViewModel avec des valeurs qui seront affichées 
             ListePersonnes = new ObservableCollection<Personne>
@@ -61,11 +82,51 @@ namespace DemoMVVM
                 new Personne { Nom = "Charlie", Age = 35 }
             };
             PersonneSelectionnee = ListePersonnes[0];
-            
+            Message = "Status";
             _currentIndex = 0; //initialiser les propriétés et les commandes
             PreviousCommand = new RelayCommand(Previous, CanGoPrevious);
             NextCommand = new RelayCommand(Next, CanGoNext);
+            OuvrirCommand = new RelayCommand(Ouvrir);
+            EnregistrerCommand = new RelayCommand(Enregistrer);
+        }
 
+        private void Ouvrir() 
+        {
+            //Désérialiser
+            try
+            {
+                /*
+                string fichier = "fichier.json";
+                string json = File.ReadAllText(fichier);
+                // Deserialize utilise le constructeur par défaut (vide)
+                Personne personne = JsonSerializer.Deserialize<Personne>(json);
+                MessageBox.Show(personne.ToString()); 
+                */
+                string file = "listePersonnes.json";
+                string listeJson = File.ReadAllText(file);
+                ListePersonnes = JsonSerializer.Deserialize<ObservableCollection<Personne>>(listeJson);
+                Message = "Fichier ouvert";
+            }
+            catch (Exception ex)
+            {
+                Message = ex.Message;
+            }
+        }
+        private void Enregistrer() 
+        {
+            //Sérialisation 
+            /*
+            string fichier = "fichier.json";
+            Personne personne = new Personne { Nom = "Justine", Age = 25 };
+            string json = JsonSerializer.Serialize(personne);
+            File.WriteAllText(fichier, json);
+            MessageBox.Show("Fichier sauvegardé."); 
+            */
+            string file = "listePersonnes.json";
+            string listeJson = JsonSerializer.Serialize(ListePersonnes);
+            File.WriteAllText(file, listeJson);
+            Message = "Liste sauvegardée.";
+            
         }
 
         private void Previous()
@@ -76,15 +137,6 @@ namespace DemoMVVM
                 PersonneSelectionnee = ListePersonnes[_currentIndex];
             }
 
-            try
-            {
-                string fichier = "fichier.json";
-                string json = File.ReadAllText(fichier);
-                Personne personne = JsonSerializer.Deserialize<Personne>(json);
-            }
-            catch (Exception ex) { 
-                MessageBox.Show(ex.Message);
-            }
         }
         private bool CanGoPrevious() => _currentIndex > 0;
 
@@ -95,11 +147,6 @@ namespace DemoMVVM
                 _currentIndex++;
                 PersonneSelectionnee = ListePersonnes[_currentIndex];
             }
-
-            string fichier = "fichier.json";
-            Personne personne = new Personne { Nom = "Justine", Age = 25 };
-            string json = JsonSerializer.Serialize(personne);
-            File.WriteAllText(fichier, json);
             
         }
         private bool CanGoNext() => _currentIndex < ListePersonnes.Count - 1;
