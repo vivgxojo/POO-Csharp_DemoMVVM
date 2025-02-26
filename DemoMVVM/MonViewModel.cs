@@ -68,6 +68,19 @@ namespace DemoMVVM
             }
         }
 
+        private Personne _newPersonne;
+        public Personne NewPersonne
+        {
+            get { return _newPersonne; }
+            set
+            {
+                _newPersonne = value;
+                OnPropertyChanged(nameof(NewPersonne));
+            }
+        }
+
+        public ICommand AjouterCommand { get; }
+
         public ICommand PreviousCommand { get; } //commandes pour les boutons
         public ICommand NextCommand { get; }
 
@@ -83,12 +96,19 @@ namespace DemoMVVM
                 new Personne { Nom = "Charlie", Age = 35 }
             };
             PersonneSelectionnee = ListePersonnes[0];
+            NewPersonne = new Personne();
             Message = "Status";
             _currentIndex = 0; //initialiser les propriétés et les commandes
             PreviousCommand = new RelayCommand(Previous, CanGoPrevious);
             NextCommand = new RelayCommand(Next, CanGoNext);
             OuvrirCommand = new RelayCommand(Ouvrir);
             EnregistrerCommand = new RelayCommand(Enregistrer);
+            AjouterCommand = new RelayCommand(Ajouter);
+        }
+
+        private void Ajouter()
+        {
+            ListePersonnes.Add(new Personne() { Nom = NewPersonne.Nom, Age = NewPersonne.Age });
         }
 
         private void Ouvrir() 
