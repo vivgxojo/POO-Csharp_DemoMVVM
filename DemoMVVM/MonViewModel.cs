@@ -37,6 +37,7 @@ namespace DemoMVVM
         { 
             get { return _listePersonnes; }
             set { _listePersonnes = value;
+                //Mettre à jour l'interface utilisateur
                 OnPropertyChanged(nameof(ListePersonnes));
             } 
         }
